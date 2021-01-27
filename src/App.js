@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles.css";
+import { createContext, CSSProperties, useState } from "react";
+import {
+  TwitterTimelineEmbed,
+  TwitterShareButton,
+  TwitterFollowButton,
+  TwitterHashtagButton,
+  TwitterMentionButton,
+  TwitterTweetEmbed,
+  TwitterMomentShare,
+  TwitterDMButton,
+  TwitterVideoEmbed,
+  TwitterOnAirButton
+} from "react-twitter-embed";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ReactCrop from "react-image-crop";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useRouteMatch
+} from "react-router-dom";
 
-function App() {
+import Tomis from "./tomi";
+import Home from "./home";
+import Navbar from "./navbar";
+
+import { Editor, EditorState } from "draft-js";
+import "draft-js/dist/Draft.css";
+export const SessionContext = createContext({ name: "aaa" });
+
+// clip: "rect(50px 400px 200px 100px)"
+export default function App() {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Editor editorState={editorState} onChange={setEditorState} />
+      <BrowserRouter>
+        <Navbar />
+      </BrowserRouter>
     </div>
   );
 }
-
-export default App;
