@@ -1,5 +1,5 @@
 import "./styles.css";
-import { createContext, CSSProperties, useState } from "react";
+import { createContext, CSSProperties, useState, useRef } from "react";
 import {
   TwitterTimelineEmbed,
   TwitterShareButton,
@@ -27,21 +27,36 @@ import Tomis from "./tomi";
 import Home from "./home";
 import Navbar from "./navbar";
 
-import { Editor, EditorState } from "draft-js";
-import "draft-js/dist/Draft.css";
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+
+import MyTextEditor from "./myTextEditor"
 export const SessionContext = createContext({ name: "aaa" });
+
 
 // clip: "rect(50px 400px 200px 100px)"
 export default function App() {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+
   return (
     <div className="App">
-      <Editor editorState={editorState} onChange={setEditorState} />
       <BrowserRouter>
-        <Navbar />
+        <Navbar>
+          <Container>
+        <Box my={2}>
+          {[...new Array(12)]
+            .map(
+              () => `Cras mattis consectetur purus sit amet fermentum.
+Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
+            )
+            .join('\n')}
+        </Box>
+      </Container>
+        </Navbar>
       </BrowserRouter>
+      <MyTextEditor />
+      
     </div>
   );
 }
