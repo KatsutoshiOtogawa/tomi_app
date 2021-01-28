@@ -1,4 +1,7 @@
 import "./styles.css";
+
+import "./RichEditor.css";
+
 import { createContext, CSSProperties,cloneElement,useState } from "react";
 import {
   TwitterTimelineEmbed,
@@ -42,6 +45,8 @@ import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Zoom from '@material-ui/core/Zoom';
 
+import { GoogleLogin } from 'react-google-login';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'fixed',
@@ -67,6 +72,8 @@ function ScrollTop(props) {
     disableHysteresis: true,
     threshold: 100,
   });
+
+  
 
   const handleClick = (event) => {
     const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
@@ -100,6 +107,11 @@ export default function Navbar(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
+
   return (
     <div className="aaa">
       <CssBaseline />
@@ -116,17 +128,26 @@ export default function Navbar(props) {
               onClose={handleClose}
             >
               {/* reference from [stackoverflow](https://stackoverflow.com/questions/32106513/material-ui-menu-using-routes) */}
-              <MenuItem component={Link} to="/tomis/instagram" >Instagram</MenuItem>
-              <MenuItem component={Link} to="/tomis/twitter" >Twitter</MenuItem>
-              <MenuItem component={Link} to="/tomis/bbs" >BBS(掲示板)</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem component={Link} to="/" >Home</MenuItem>
+              <MenuItem component={Link} to="/tomis" >十味トップ</MenuItem>
+              <MenuItem component={Link} to="/tomis/instagrams" >Instagram</MenuItem>
+              <MenuItem component={Link} to="/tomis/twitters" >Twitter</MenuItem>
+              <MenuItem component={Link} to="/tomis/bbss" >BBS(掲示板)</MenuItem>
+              {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
             </Menu>
             <Link className="navbar-brand" to="/">
             <Typography variant="h6" className={classes.title}>
             非公式サイト
             </Typography>
             </Link>
-            <Button color="inherit">Login</Button>
+            {/* <Button color="inherit">Login</Button> */}
+            <GoogleLogin
+            clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
           </Toolbar>
         </AppBar>
         <Toolbar id="back-to-top-anchor" />

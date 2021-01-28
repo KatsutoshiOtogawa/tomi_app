@@ -24,11 +24,10 @@ import {
   useRouteMatch
 } from "react-router-dom";
 
-import { Editor, EditorState } from "draft-js";
-import "draft-js/dist/Draft.css";
 
+import MyTextEditor from "./myTextEditor"
 export default function Tomis() {
-  let match = useRouteMatch("");
+  let match = useRouteMatch();
 
   // let gravure_idol = useParams();
   function Tomi() {
@@ -37,14 +36,11 @@ export default function Tomis() {
     return <h3>id:{id}</h3>;
   }
   function Bbs() {
-    const [editorState, setEditorState] = useState(() =>
-      EditorState.createEmpty()
-    );
 
     return (
       <div>
         <h2>掲示板</h2>
-        <Editor editorState={editorState} onChange={setEditorState} />
+        <MyTextEditor />
       </div>
     );
   }
@@ -76,13 +72,12 @@ export default function Tomis() {
     function fetch() {}
     return (
       <div>
-        {/* 後でページ送り実装 */}
         <TwitterTimelineEmbed
           sourceType="profile"
           screenName="toomi_nico"
           options={{ height: 10240 }}
         />
-        <TwitterTweetEmbed tweetId={"1344587203402321920"} />
+        {/* <TwitterTweetEmbed tweetId={"1344587203402321920"} />
         <h3>twitter_id:{id}</h3>
         <div className="card">
           <img
@@ -115,7 +110,7 @@ export default function Tomis() {
               </p>
             </em>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
@@ -123,14 +118,6 @@ export default function Tomis() {
   return (
     <div>
       {/* twitterのidを書く。 */}
-      <ul>
-        <li>
-          <Link to={`${match.url}/twitters`}>twitterを見てみる</Link>
-        </li>
-        <li>
-          <Link to={`${match.url}/instagrams`}>インスタグラムを見てみる</Link>
-        </li>
-      </ul>
       <Switch>
         <Route path={`${match.url}/twitters`}>
           <Twitters />
@@ -138,17 +125,16 @@ export default function Tomis() {
         <Route path={`${match.url}/instagrams`}>
           <Instgrams />
         </Route>
-        <Route path={`${match.url}/bbs`}>
+        <Route path={`${match.url}/bbss`}>
           <Bbs />
         </Route>
         <Route path={`${match.url}/:id`}>
           <Tomi />
         </Route>
       </Switch>
-
-      <Switch>
+      {/* <Switch>
         <Route path="/tomi/1"></Route>
-      </Switch>
+      </Switch> */}
     </div>
   );
 }
