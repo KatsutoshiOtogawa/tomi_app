@@ -1,5 +1,5 @@
 import "./styles.css";
-import { createContext, CSSProperties,cloneElement } from "react";
+import { createContext, CSSProperties,cloneElement,useState } from "react";
 import {
   TwitterTimelineEmbed,
   TwitterShareButton,
@@ -35,6 +35,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import PropTypes from 'prop-types';
 
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -83,21 +85,42 @@ function ScrollTop(props) {
   );
 }
 
-// ScrollTop.propTypes = {
-//   children: PropTypes.element.isRequired,
-
-// };
-
 export default function Navbar(props) {
   const classes = useStyles();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  // Navbarでgravure _idolの値をもらって動的に作成。
+  // const gravure_idols = [
+  //   "tomi"
+  // ];
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div className="aaa">
       <CssBaseline />
         <AppBar>
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClick} >
               <MenuIcon />
             </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              {/* reference from [stackoverflow](https://stackoverflow.com/questions/32106513/material-ui-menu-using-routes) */}
+              <MenuItem component={Link} to="/tomis/instagram" >Instagram</MenuItem>
+              <MenuItem component={Link} to="/tomis/twitter" >Twitter</MenuItem>
+              <MenuItem component={Link} to="/tomis/bbs" >BBS(掲示板)</MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
             <Link className="navbar-brand" to="/">
             <Typography variant="h6" className={classes.title}>
             非公式サイト
@@ -114,87 +137,14 @@ export default function Navbar(props) {
           <KeyboardArrowUpIcon />
         </Fab>
       </ScrollTop>
-
-      </div>
-  //     <div className="fixed-top">
-  //       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  //         <Link className="navbar-brand" to="/">
-  //           十味ちゃん非公式サイト
-  //         </Link>
-
-  //         <button
-  //           className="navbar-toggler"
-  //           type="button"
-  //           data-toggle="collapse"
-  //           data-target="#navbarSupportedContent"
-  //           aria-controls="navbarSupportedContent"
-  //           aria-expanded="false"
-  //           aria-label="Toggle navigation"
-  //         >
-  //           <span className="navbar-toggler-icon"></span>
-  //         </button>
-
-  //         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-  //           <ul className="navbar-nav mr-auto">
-  //             <li className="nav-item active">
-  //               <a className="nav-link" href="/">
-  //                 Home <span className="sr-only">(current)</span>
-  //               </a>
-  //             </li>
-  //             <li className="nav-item">
-  //               <Link className="nav-link" to="/tomis/instagrams/">
-  //                 Instagram
-  //               </Link>
-  //             </li>
-  //             <li className="nav-item">
-  //               <Link className="nav-link" to="/tomis/twitters/">
-  //                 Twitter
-  //               </Link>
-  //             </li>
-  //             <li className="nav-item">
-  //               <Link className="nav-link" to="/tomis/bbs/">
-  //                 BBS(掲示板)
-  //               </Link>
-  //             </li>
-  //             <li className="nav-item">
-  //               <a className="nav-link disabled" href="/">
-  //                 工事中
-  //               </a>
-  //             </li>
-  //           </ul>
-  //           <form className="form-inline my-2 my-lg-0">
-  //             <input
-  //               className="form-control mr-sm-2"
-  //               type="search"
-  //               placeholder="Search"
-  //               aria-label="Search"
-  //             />
-  //             <button
-  //               className="btn btn-outline-success my-2 my-sm-0"
-  //               type="submit"
-  //             >
-  //               Search
-  //             </button>
-  //           </form>
-  //         </div>
-  //       </nav>
-  //       <Link className="dropdown-item" to="/tomis">
-  //         十味ちゃん
-  //       </Link>
-  //       <Switch>
-  //         <Route path="/tomis">
-  //           <Tomis />
-  //         </Route>
-  //         <Route path="/">
-  //           <Home />
-  //         </Route>
-  //       </Switch>
-
-  //       {/* <ReactCrop
-  // src="https://pbs.twimg.com/media/ErHyPomVgAAeFVx?format=jpg&name=large"
-  // onChange={console.log("aaa")}
-  // crop={}
-  // /> */}
-  //     </div>
+      <Switch>
+          <Route path="/tomis">
+            <Tomis />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+      </Switch>
+    </div>
   );
 }
